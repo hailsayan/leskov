@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/Go-Rest/service/user"
+	"github.com/hailsayan/woland/services/user"
 )
 
 type APIServer struct {
@@ -16,8 +16,8 @@ type APIServer struct {
 
 func NewAPIServer(addr string, db *sql.DB) *APIServer {
 	return &APIServer{
-		addr: addr,
-		db:   db,
+		addr: addr, 
+        db: db,
 	}
 }
 
@@ -28,7 +28,6 @@ func (s *APIServer) Run() error {
 	userHandler := user.NewHandler()
 	userHandler.RegisterRoutes(subrouter)
 
-	log.Println("listenint on", s.addr)
-
+    log.Println("Listening on", s.addr)
 	return http.ListenAndServe(s.addr, router)
 }
