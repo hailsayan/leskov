@@ -1,4 +1,4 @@
-module github.com/hailsayan/Go-Rest
+module github.com/hailsayan/woland
 
 go 1.23.0
 
