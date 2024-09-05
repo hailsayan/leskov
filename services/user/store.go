@@ -20,7 +20,7 @@ func (s *Store) GetUserByEmail(email string) (*types.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	// empty pointer
+	
 	u := new(types.User)
 	for rows.Next() {
 		u, err = scanRowsIntoUser(rows)
@@ -33,7 +33,14 @@ func (s *Store) GetUserByEmail(email string) (*types.User, error) {
 		return nil, fmt.Errorf("user not found")
 	}
 	return u, nil
+}
 
+func (s *Store) CreateUser(user types.User) error {
+	_, err := s.db.Exec("INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)", user.FirstName, user.LastName, user.Email, user.Password)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func scanRowsIntoUser(rows *sql.Rows) (*types.User, error) {
