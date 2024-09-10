@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
+	"github.com/hailsayan/woland/services/auth"
 	"github.com/hailsayan/woland/types"
 	"github.com/hailsayan/woland/utils"
 )
@@ -23,8 +24,10 @@ func NewHandler(store types.ProductStore, userStore types.UserStore) *Handler {
 func (h *Handler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/products", h.handleGetProducts).Methods(http.MethodGet)
 	router.HandleFunc("/products/{productID}", h.handleGetProduct).Methods(http.MethodGet)
-}
 
+	// admin routes
+	router.HandleFunc("/products", auth.WithJWTAuth(h.handleCreateProduct, h.userStore)).Methods(http.MethodPost)
+}
 
 func (h *Handler) handleGetProducts(w http.ResponseWriter, r *http.Request) {
 	product, err := h.store.GetProducts()
