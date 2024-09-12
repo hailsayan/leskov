@@ -6,40 +6,30 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/woland/services/cart"
-	"github.com/hailsayan/woland/services/order"
-	"github.com/hailsayan/woland/services/product"
-	"github.com/hailsayan/woland/services/user"
+	"github.com/hailsayan/woland/store"
 )
 
-type APIServer struct {
-	addr string
-	db   *sql.DB
+type Server struct {
+	addr  string
+	db    *sql.DB
+	store store.Storage
 }
 
-func NewAPIServer(addr string, db *sql.DB) *APIServer {
-	return &APIServer{
+func NewServer (addr string, db *sql.DB, store store.Storage) *Server{
+	return &Server{
 		addr: addr,
-		db:   db,
+		db: db,
+		store: store,
 	}
 }
 
-func (s *APIServer) Run() error {
+func (s *Server) Run() error {
 	router := mux.NewRouter()
 	subrouter := router.PathPrefix("/api/v1").Subrouter()
 
-	userStore := user.NewStore(s.db)
-	userHandler := user.NewHandler(userStore)
-	userHandler.RegisterRoutes(subrouter)
-
-	productStore := product.NewStore(s.db)
-	productHandler := product.NewHandler(productStore, userStore)
-	productHandler.RegisterRoutes(subrouter)
-
-	orderStore := order.NewStore(s.db)
-
-	cartHandler := cart.NewHandler(productStore, orderStore, userStore)
-	cartHandler.RegisterRoutes(subrouter)
+	s.UserRegisterRoutes(subrouter)
+	s.ProductRegisterRoutes(subrouter)
+	s.CartRegisterRoutes(subrouter)
 
 	log.Println("Listening on", s.addr)
 	return http.ListenAndServe(s.addr, router)
