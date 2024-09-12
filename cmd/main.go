@@ -7,8 +7,9 @@ import (
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/hailsayan/woland/cmd/api"
-	"github.com/hailsayan/woland/config"
+	configs "github.com/hailsayan/woland/config"
 	"github.com/hailsayan/woland/db"
+	"github.com/hailsayan/woland/store"
 )
 
 func main() {
@@ -26,10 +27,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
 	initStorage(db)
+	store := store.NewStorage(db)
 
-	server := api.NewAPIServer(fmt.Sprintf(":%s", configs.Envs.Port), db)
+	server := api.NewServer(fmt.Sprintf(":%s", configs.Envs.Port), db, store)
 	if err := server.Run(); err != nil {
 		log.Fatal(err)
 	}
