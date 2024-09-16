@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/hailsayan/woland/types"
+	"github.com/hailsayan/woland/internal/types"
 )
 
 type UserStore struct {

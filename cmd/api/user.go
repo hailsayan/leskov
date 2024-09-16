@@ -7,10 +7,10 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
-	configs "github.com/hailsayan/woland/config"
-	"github.com/hailsayan/woland/auth"
-	"github.com/hailsayan/woland/types"
-	"github.com/hailsayan/woland/utils"
+	configs "github.com/hailsayan/woland/internal/config"
+	"github.com/hailsayan/woland/internal/auth"
+	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/woland/internal/utils"
 )
 
 func (s *Server) UserRegisterRoutes(router *mux.Router) {

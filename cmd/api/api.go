@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/woland/store"
+	"github.com/hailsayan/woland/internal/store"
 )
 
 type Server struct {

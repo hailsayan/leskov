@@ -8,8 +8,8 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	mysqlMigrate "github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	configs "github.com/hailsayan/woland/config"
-	"github.com/hailsayan/woland/db"
+	configs "github.com/hailsayan/woland/internal/config"
+	"github.com/hailsayan/woland/internal/db"
 )
 
 func main() {

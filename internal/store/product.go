@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hailsayan/woland/types"
+	"github.com/hailsayan/woland/internal/types"
 )
 
 type PostStore struct {

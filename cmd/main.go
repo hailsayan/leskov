@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/hailsayan/woland/cmd/api"
-	configs "github.com/hailsayan/woland/config"
-	"github.com/hailsayan/woland/db"
-	"github.com/hailsayan/woland/store"
+	configs "github.com/hailsayan/woland/internal/config"
+	"github.com/hailsayan/woland/internal/db"
+	"github.com/hailsayan/woland/internal/store"
 )
 
 func main() {

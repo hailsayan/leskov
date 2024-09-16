@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/woland/auth"
-	"github.com/hailsayan/woland/types"
-	"github.com/hailsayan/woland/utils"
+	"github.com/hailsayan/woland/internal/auth"
+	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/woland/internal/utils"
 )
 
 func (h *Server) ProductRegisterRoutes(router *mux.Router) {
