@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"github.com/hailsayan/woland/internal/auth"
 	"github.com/hailsayan/woland/internal/types"
