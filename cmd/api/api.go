@@ -2,24 +2,26 @@ package api
 
 import (
 	"database/sql"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/hailsayan/woland/internal/store"
+	"go.uber.org/zap"
 )
 
 type Server struct {
 	addr  string
 	db    *sql.DB
 	store store.Storage
+	logger *zap.SugaredLogger
 }
 
-func NewServer (addr string, db *sql.DB, store store.Storage) *Server{
+func NewServer (addr string, db *sql.DB, store store.Storage, logger *zap.SugaredLogger) *Server{
 	return &Server{
 		addr: addr,
 		db: db,
 		store: store,
+		logger: logger,
 	}
 }
 
@@ -31,6 +33,6 @@ func (s *Server) Run() error {
 	s.ProductRegisterRoutes(subrouter)
 	s.CartRegisterRoutes(subrouter)
 
-	log.Println("Listening on", s.addr)
+	s.logger.Infow("Listening on", "addr", s.addr)
 	return http.ListenAndServe(s.addr, router)
 }
