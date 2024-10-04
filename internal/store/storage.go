@@ -1,16 +1,19 @@
 package store
 
 import (
+	"context"
 	"database/sql"
+	"time"
 
 	"github.com/hailsayan/woland/internal/types"
-
 )
+
+var QueryTimeoutDuration = time.Second * 5
 
 type IUsers interface {
 	GetUserByEmail(email string) (*types.User, error)
 	Create(types.User) error
-	GetUserByID(id int) (*types.User, error)
+	GetUserByID(ctx context.Context, id int) (*types.User, error)
 }
 type IProduct interface {
 	GetProducts() ([]*types.Product, error)
@@ -25,15 +28,15 @@ type IOrder interface {
 }
 
 type Storage struct {
-	Users IUsers
+	Users   IUsers
 	Product IProduct
-	Order IOrder
+	Order   IOrder
 }
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
-		Users: &UserStore{db},
+		Users:   &UserStore{db},
 		Product: &PostStore{db},
-		Order: &OrderStore{db},
+		Order:   &OrderStore{db},
 	}
 }
