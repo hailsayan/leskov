@@ -45,7 +45,7 @@ func WithJWTAuth(handlerFunc http.HandlerFunc, store store.IUsers) http.HandlerF
 			return
 		}
 
-		u, err := store.GetUserByID(userID)
+		u, err := store.GetUserByID(r.Context(), userID)
 		if err != nil {
 			log.Printf("failed to get user by id: %v", err)
 			permissionDenied(w)

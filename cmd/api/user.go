@@ -7,8 +7,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
-	configs "github.com/hailsayan/woland/internal/config"
 	"github.com/hailsayan/woland/internal/auth"
+	configs "github.com/hailsayan/woland/internal/config"
 	"github.com/hailsayan/woland/internal/types"
 	"github.com/hailsayan/woland/internal/utils"
 )
@@ -109,7 +109,7 @@ func (s *Server) handleGetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.store.Users.GetUserByID(userID)
+	user, err := s.getUser(r.Context(), userID)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return

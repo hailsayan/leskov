@@ -6,22 +6,25 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hailsayan/woland/internal/store"
+	"github.com/hailsayan/woland/internal/store/cache"
 	"go.uber.org/zap"
 )
 
 type Server struct {
-	addr  string
-	db    *sql.DB
-	store store.Storage
-	logger *zap.SugaredLogger
+	addr         string
+	db           *sql.DB
+	store        store.Storage
+	logger       *zap.SugaredLogger
+	cacheStorage cache.Storage
 }
 
-func NewServer (addr string, db *sql.DB, store store.Storage, logger *zap.SugaredLogger) *Server{
+func NewServer(addr string, db *sql.DB, store store.Storage, logger *zap.SugaredLogger, cacheStorage cache.Storage) *Server {
 	return &Server{
-		addr: addr,
-		db: db,
-		store: store,
+		addr:   addr,
+		db:     db,
+		store:  store,
 		logger: logger,
+		cacheStorage: cacheStorage,
 	}
 }
 
