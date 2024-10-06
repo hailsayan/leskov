@@ -1,6 +1,7 @@
 package store
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"strings"
@@ -8,11 +9,11 @@ import (
 	"github.com/hailsayan/woland/internal/types"
 )
 
-type PostStore struct {
+type ProductStore struct {
 	db *sql.DB
 }
 
-func (s *PostStore) GetProducts() ([]*types.Product, error) {
+func (s *ProductStore) GetProducts() ([]*types.Product, error) {
 	rows, err := s.db.Query("SELECT * FROM products")
 	if err != nil {
 		return nil, err
@@ -29,24 +30,32 @@ func (s *PostStore) GetProducts() ([]*types.Product, error) {
 	return products, nil
 }
 
-func (s *PostStore) GetProductByID(productID int) (*types.Product, error) {
-	rows, err := s.db.Query("SELECT * FROM products WHERE id = ?", productID)
-	if err != nil {
-		return nil, err
-	}
+func (s *ProductStore) GetProductByID(ctx context.Context, productID int) (*types.Product, error) {
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	query := "SELECT id, name, description, price, createdAt FROM products WHERE id = ?"
 
 	p := new(types.Product)
-	for rows.Next() {
-		p, err = scanRowsIntoProduct(rows)
-		if err != nil {
-			return nil, err
+	err := s.db.QueryRowContext(ctx, query, productID).Scan(
+		&p.ID,
+		&p.Name,
+		&p.Description,
+		&p.Price,
+		&p.CreatedAt,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("product not found")
 		}
+		return nil, err
 	}
 
 	return p, nil
 }
 
-func (s *PostStore) GetProductsByID(productIDs []int) ([]types.Product, error) {
+
+func (s *ProductStore) GetProductsByID(productIDs []int) ([]types.Product, error) {
 	placeholders := strings.Repeat(",?", len(productIDs)-1)
 	query := fmt.Sprintf("SELECT * FROM products WHERE id IN (?%s)", placeholders)
 
@@ -75,7 +84,7 @@ func (s *PostStore) GetProductsByID(productIDs []int) ([]types.Product, error) {
 
 }
 
-func (s *PostStore) CreateProduct(product types.CreateProductPayload) error {
+func (s *ProductStore) CreateProduct(product types.CreateProductPayload) error {
 	_, err := s.db.Exec("INSERT INTO products (name, price, image, description, quantity) VALUES (?, ?, ?, ?, ?)", product.Name, product.Price, product.Image, product.Description, product.Quantity)
 	if err != nil {
 		return err
@@ -84,7 +93,7 @@ func (s *PostStore) CreateProduct(product types.CreateProductPayload) error {
 	return nil
 }
 
-func (s *PostStore) UpdateProduct(product types.Product) error {
+func (s *ProductStore) UpdateProduct(product types.Product) error {
 	_, err := s.db.Exec("UPDATE products SET name = ?, price = ?, image = ?, description = ?, quantity = ? WHERE id = ?", product.Name, product.Price, product.Image, product.Description, product.Quantity, product.ID)
 	if err != nil {
 		return err

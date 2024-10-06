@@ -20,7 +20,7 @@ type IProduct interface {
 	GetProductsByID(ids []int) ([]types.Product, error)
 	CreateProduct(types.CreateProductPayload) error
 	UpdateProduct(types.Product) error
-	GetProductByID(id int) (*types.Product, error)
+	GetProductByID(ctx context.Context,id int) (*types.Product, error)
 }
 type IOrder interface {
 	CreateOrder(types.Order) (int, error)
@@ -36,7 +36,7 @@ type Storage struct {
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
 		Users:   &UserStore{db},
-		Product: &PostStore{db},
+		Product: &ProductStore{db},
 		Order:   &OrderStore{db},
 	}
 }
