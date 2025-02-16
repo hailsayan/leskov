@@ -43,7 +43,7 @@ func (h *Server) handleGetProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	product, err := h.store.Product.GetProductByID(productID)
+	product, err := h.getProduct(r.Context(), productID)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return
@@ -51,6 +51,7 @@ func (h *Server) handleGetProduct(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJSON(w, http.StatusOK, product)
 }
+
 
 func (h *Server) handleCreateProduct(w http.ResponseWriter, r *http.Request) {
 	var product types.CreateProductPayload
