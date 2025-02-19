@@ -15,6 +15,8 @@ type IUsers interface {
 type IProducts interface {
 	Get(context.Context, int) (*types.Product, error)
 	Set(context.Context, *types.Product) error
+	GetAll(ctx context.Context) ([]*types.Product, error)
+	SetAll(ctx context.Context, products []*types.Product) error
 }
 
 type Storage struct {

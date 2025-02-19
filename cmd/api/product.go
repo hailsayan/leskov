@@ -21,12 +21,13 @@ func (h *Server) ProductRegisterRoutes(router *mux.Router) {
 }
 
 func (h *Server) handleGetProducts(w http.ResponseWriter, r *http.Request) {
-	product, err := h.store.Product.GetProducts()
+	products, err := h.getProductsFromCacheOrDB(r.Context(), nil)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
-	utils.WriteJSON(w, http.StatusOK, product)
+
+	utils.WriteJSON(w, http.StatusOK, products)
 }
 
 func (h *Server) handleGetProduct(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +44,7 @@ func (h *Server) handleGetProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	product, err := h.getProduct(r.Context(), productID)
+	product, err := h.getProductsFromCacheOrDB(r.Context(), &productID)
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
 		return
@@ -51,6 +52,7 @@ func (h *Server) handleGetProduct(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJSON(w, http.StatusOK, product)
 }
+
 
 
 func (h *Server) handleCreateProduct(w http.ResponseWriter, r *http.Request) {
