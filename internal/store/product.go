@@ -1,7 +1,6 @@
 package store
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"strings"
@@ -30,30 +29,22 @@ func (s *ProductStore) GetProducts() ([]*types.Product, error) {
 	return products, nil
 }
 
-func (s *ProductStore) GetProductByID(ctx context.Context, productID int) (*types.Product, error) {
-	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
-	defer cancel()
-
-	query := "SELECT id, name, description, price, createdAt FROM products WHERE id = ?"
+func (s *ProductStore) GetProductByID(productID int) (*types.Product, error) {
+	rows, err := s.db.Query("SELECT * FROM products WHERE id = ?", productID)
+	if err != nil {
+		return nil, err
+	}
 
 	p := new(types.Product)
-	err := s.db.QueryRowContext(ctx, query, productID).Scan(
-		&p.ID,
-		&p.Name,
-		&p.Description,
-		&p.Price,
-		&p.CreatedAt,
-	)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("product not found")
+	for rows.Next() {
+		p, err = scanRowsIntoProduct(rows)
+		if err != nil {
+			return nil, err
 		}
-		return nil, err
 	}
 
 	return p, nil
 }
-
 
 func (s *ProductStore) GetProductsByID(productIDs []int) ([]types.Product, error) {
 	placeholders := strings.Repeat(",?", len(productIDs)-1)

@@ -11,7 +11,7 @@ import (
 func (s *Server) getProductsFromCacheOrDB(ctx context.Context, id *int) (interface{}, error) {
 	if !configs.Envs.Enabled {
 		if id != nil {
-			return s.store.Product.GetProductByID(ctx, *id)
+			return s.store.Product.GetProductByID(*id)
 		}
 		return s.store.Product.GetProducts()
 	}
@@ -23,7 +23,7 @@ func (s *Server) getProductsFromCacheOrDB(ctx context.Context, id *int) (interfa
 		}
 
 		if product == nil {
-			product, err = s.store.Product.GetProductByID(ctx, *id)
+			product, err = s.store.Product.GetProductByID(*id)
 			if err != nil {
 				return nil, err
 			}
@@ -55,7 +55,7 @@ func (s *Server) getProductsFromCacheOrDB(ctx context.Context, id *int) (interfa
 
 func (s *Server) getUser(ctx context.Context, id int) (*types.User, error) {
 	if !configs.Envs.Enabled {
-		return s.store.Users.GetUserByID(ctx, id)
+		return s.store.Users.GetUserByID(id)
 	}
 
 	user, err := s.cacheStorage.Users.Get(ctx, id)
@@ -64,7 +64,7 @@ func (s *Server) getUser(ctx context.Context, id int) (*types.User, error) {
 	}
 
 	if user == nil {
-		user, err = s.store.Users.GetUserByID(ctx, id)
+		user, err = s.store.Users.GetUserByID(id)
 		if err != nil {
 			return nil, err
 		}

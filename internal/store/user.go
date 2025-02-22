@@ -1,7 +1,6 @@
 package store
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 
@@ -40,29 +39,25 @@ func (s *UserStore) Create(user types.User) error {
 	return nil
 }
 
-func (s *UserStore)GetUserByID(ctx context.Context, id int) (*types.User, error) {
-	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
-	defer cancel()
-
-	query := "SELECT id, first_name, last_name, email, password, created_at FROM users WHERE id = ?"
-
-	user := new(types.User)
-	err := s.db.QueryRowContext(ctx, query, id).Scan(
-		&user.ID,
-		&user.FirstName,
-		&user.LastName,
-		&user.Email,
-		&user.Password,
-		&user.CreatedAt,
-	)
+func (s *UserStore) GetUserByID(id int) (*types.User, error) {
+	rows, err := s.db.Query("SELECT * FROM users WHERE id = ?", id)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("user not found")
-		}
 		return nil, err
 	}
 
-	return user, nil
+	u := new(types.User)
+	for rows.Next() {
+		u, err = scanRowsIntoUser(rows)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if u.ID == 0 {
+		return nil, fmt.Errorf("user not found")
+	}
+
+	return u, nil
 }
 
 func scanRowsIntoUser(rows *sql.Rows) (*types.User, error) {
