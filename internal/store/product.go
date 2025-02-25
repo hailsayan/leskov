@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 type ProductStore struct {

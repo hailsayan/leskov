@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 type ProductStore struct {

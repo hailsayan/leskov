@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/woland/internal/store"
-	"github.com/hailsayan/woland/internal/store/cache"
+	"github.com/hailsayan/leskov/internal/store"
+	"github.com/hailsayan/leskov/internal/store/cache"
 	"go.uber.org/zap"
 )
 
@@ -20,10 +20,10 @@ type Server struct {
 
 func NewServer(addr string, db *sql.DB, store store.Storage, logger *zap.SugaredLogger, cacheStorage cache.Storage) *Server {
 	return &Server{
-		addr:   addr,
-		db:     db,
-		store:  store,
-		logger: logger,
+		addr:         addr,
+		db:           db,
+		store:        store,
+		logger:       logger,
 		cacheStorage: cacheStorage,
 	}
 }

@@ -6,11 +6,11 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/go-sql-driver/mysql"
-	"github.com/hailsayan/woland/cmd/api"
-	configs "github.com/hailsayan/woland/internal/config"
-	"github.com/hailsayan/woland/internal/db"
-	"github.com/hailsayan/woland/internal/store"
-	"github.com/hailsayan/woland/internal/store/cache"
+	"github.com/hailsayan/leskov/cmd/api"
+	configs "github.com/hailsayan/leskov/internal/config"
+	"github.com/hailsayan/leskov/internal/db"
+	"github.com/hailsayan/leskov/internal/store"
+	"github.com/hailsayan/leskov/internal/store/cache"
 	"go.uber.org/zap"
 )
 

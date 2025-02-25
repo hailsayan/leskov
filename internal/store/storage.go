@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 var QueryTimeoutDuration = time.Second * 5

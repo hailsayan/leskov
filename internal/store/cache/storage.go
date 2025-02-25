@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 type IUsers interface {
@@ -26,7 +26,7 @@ type Storage struct {
 
 func NewRedisStorage(rdb *redis.Client) Storage {
 	return Storage{
-		Users: &UserStore{rdb: rdb},
+		Users:    &UserStore{rdb: rdb},
 		Products: &ProductStore{rdb: rdb},
 	}
 }

@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 func getCartItemsIDs(items []types.CartCheckoutItem) ([]int, error) {

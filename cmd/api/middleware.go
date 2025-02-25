@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	configs "github.com/hailsayan/woland/internal/config"
-	"github.com/hailsayan/woland/internal/types"
+	configs "github.com/hailsayan/leskov/internal/config"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 func (s *Server) getProductsFromCacheOrDB(ctx context.Context, id *int) (interface{}, error) {

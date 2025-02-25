@@ -1,4 +1,4 @@
-module github.com/hailsayan/woland
+module github.com/hailsayan/leskov
 
 go 1.23.0
 

@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/woland/internal/auth"
-	"github.com/hailsayan/woland/internal/types"
-	"github.com/hailsayan/woland/internal/utils"
+	"github.com/hailsayan/leskov/internal/auth"
+	"github.com/hailsayan/leskov/internal/types"
+	"github.com/hailsayan/leskov/internal/utils"
 )
 
 func (h *Server) ProductRegisterRoutes(router *mux.Router) {
@@ -52,8 +52,6 @@ func (h *Server) handleGetProduct(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJSON(w, http.StatusOK, product)
 }
-
-
 
 func (h *Server) handleCreateProduct(w http.ResponseWriter, r *http.Request) {
 	var product types.CreateProductPayload

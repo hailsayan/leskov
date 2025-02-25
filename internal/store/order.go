@@ -3,7 +3,7 @@ package store
 import (
 	"database/sql"
 
-	"github.com/hailsayan/woland/internal/types"
+	"github.com/hailsayan/leskov/internal/types"
 )
 
 type OrderStore struct {

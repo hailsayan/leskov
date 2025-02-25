@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
-	"github.com/hailsayan/woland/internal/auth"
-	"github.com/hailsayan/woland/internal/types"
-	"github.com/hailsayan/woland/internal/utils"
+	"github.com/hailsayan/leskov/internal/auth"
+	"github.com/hailsayan/leskov/internal/types"
+	"github.com/hailsayan/leskov/internal/utils"
 )
 
 func (s *Server) CartRegisterRoutes(router *mux.Router) {
@@ -17,7 +17,7 @@ func (s *Server) CartRegisterRoutes(router *mux.Router) {
 
 func (s *Server) handleCheckout(w http.ResponseWriter, r *http.Request) {
 	userID := auth.GetUserIDFromContext(r.Context())
-	
+
 	var cart types.CartCheckoutPayload
 	if err := utils.ParseJSON(r, &cart); err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
