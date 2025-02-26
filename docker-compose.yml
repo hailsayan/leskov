@@ -12,25 +12,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: mypassword
       MYSQL_DATABASE: leskov
+    networks:
+      - backend 
+  
 
-  api:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    restart: on-failure
-    volumes:
-      - .:/go/src/api
+  redis:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    container_name: redis
     ports:
-      - "8080:8080"
-    environment:
-      DB_HOST: db
-      DB_USER: root
-      DB_PASSWORD: mypassword
-      DB_NAME: leskov
-    links:
-      - db
-    depends_on:
-      - db
-
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+  
 volumes:
   db_data:
+networks:
+  backend:
+    driver: bridge
