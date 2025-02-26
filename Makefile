@@ -3,9 +3,6 @@ build:
 
 run: build
 	@./bin/leskov
-
-test:
-	@go test -v ./...
 	
 migration:
 	@migrate create -ext sql -dir cmd/migrate/migrations $(filter-out $@,$(MAKECMDGOALS))
